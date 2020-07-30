@@ -1,0 +1,11 @@
+{
+    "verbose": false,
+    "ext": "ts js json",
+    "watch": [
+        "server/**/*.ts"
+    ],
+    "ignore": [
+        "src/**/*"
+    ],
+    "exec": "node --inspect --require ./ts-hook.js ./server/main.ts"
+}
