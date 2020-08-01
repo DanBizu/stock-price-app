@@ -12,7 +12,6 @@ export function getStockPriceBySymbol(req: http.IncomingMessage): Promise<string
 
             let completeStream = Buffer.from('');
             res.on('data', data => {
-                console.log('+++ I got a chunk');
                 completeStream = Buffer.concat([completeStream, data]);
             })
 

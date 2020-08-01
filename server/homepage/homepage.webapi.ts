@@ -17,7 +17,6 @@ export function homepageRequestHandler(req: http.IncomingMessage, res: http.Serv
                     let headers: http.OutgoingHttpHeaders = {
                         'Access-Control-Allow-Origin': '*',
                     }
-                    console.log('_+++data', response);
                     res.writeHead(200, headers);
                     res.end(response);
                 });
