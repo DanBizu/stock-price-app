@@ -1,6 +1,6 @@
 import './App.css';
-import { Homepage } from './modules/homepage/homepage';
-import { Homepage2 } from './modules/homepage2/homepage2';
+import { Homepage } from './homepage/homepage';
+import { Homepage2 } from './homepage2/homepage2';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import logo from './logo.svg';
