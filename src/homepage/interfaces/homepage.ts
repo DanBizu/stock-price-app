@@ -29,3 +29,8 @@ export interface GraphStockValues {
     low: string,
     close: string,
 }
+
+export interface Limits {
+    min: number,
+    max: number,
+}

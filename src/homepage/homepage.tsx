@@ -1,13 +1,17 @@
 import { Stock } from './interfaces/homepage';
-import { apiCall, initStockData, prepareData } from './services/homepage.services';
-import React from 'react';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
+    apiCall,
+    getLimits,
+    initStockData,
+    prepareData
+    } from './services/homepage.services';
+import { Graph } from '../graph/graph';
+import React from 'react';
 
 interface Props { }
 interface State {
     data: Stock;
+    receivedData: boolean;
     symbol: string;
 }
 
@@ -17,16 +21,14 @@ export class Homepage extends React.Component<Props, State> {
 
         this.state = {
             data: initStockData(),
+            receivedData: false,
             symbol: '',
         }
     }
 
     public render() {
-        const { data, symbol } = this.state;
-        console.log('+++ data', data);
-        console.log('+++ symbol', symbol);
+        const { data, receivedData } = this.state;
 
-        prepareData(data);
         return (
             <div>
                 <h1> Homepage </h1>
@@ -39,25 +41,12 @@ export class Homepage extends React.Component<Props, State> {
 
                 <button onClick={() => this.getStockPrices()}>Get prices</button>
 
-                <LineChart
-                    width={500}
-                    height={300}
-                    data={prepareData(data)}
-                    margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[90, 110]} allowDecimals={true} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="open" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="high" stroke="#d89284" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="low" stroke="#d8d584" activeDot={{ r: 8 }} />
-
-                    <Line type="monotone" dataKey="close" stroke="#82ca9d" />
-                </LineChart>
+                {
+                    receivedData &&
+                    <Graph data={prepareData(data)}
+                        min={getLimits(prepareData(data)).min}
+                        max={getLimits(prepareData(data)).max} />
+                }
             </div>
         );
     }
@@ -76,6 +65,7 @@ export class Homepage extends React.Component<Props, State> {
             this.setState({
                 ...this.state,
                 data,
+                receivedData: true,
             });
         });
     }

@@ -1,5 +1,7 @@
 import { SERVER_URL } from '../../shared/server-cfg';
-import { GraphStockValues, Stock } from '../interfaces/homepage';
+import { GraphStockValues, Limits, Stock } from '../interfaces/homepage';
+
+// ====== API ======
 
 export async function apiCall(symbol: string) {
     let response = await fetch(`${SERVER_URL}/stock-prices?symbol=${symbol}`)
@@ -9,6 +11,9 @@ export async function apiCall(symbol: string) {
     return response;
 }
 
+// ====== UTILS ======
+
+/** Initialize with empty values */
 export function initStockData(): Stock {
     return {
         "Meta Data": {
@@ -29,7 +34,6 @@ export function initStockData(): Stock {
  */
 export function prepareData(data: Stock): GraphStockValues[] {
     let timeSeries = Object.keys(data["Time Series (Daily)"])
-    console.log('+++ timeSeries', timeSeries);
 
     let result = timeSeries.map(date => {
         return {
@@ -43,4 +47,43 @@ export function prepareData(data: Stock): GraphStockValues[] {
 
     /** Reverse because dates start from most recent to oldest */
     return result.reverse();
+}
+
+/**
+ * Get min and max out of all values (open, high, low, close)
+ */
+export function getLimits(data: GraphStockValues[]): Limits {
+    let min = +data[0].high;
+    let max = +data[0].low;
+
+    data.forEach(stockValue => {
+        if (+stockValue.close < min) {
+            min = Math.floor(+stockValue.close);
+        } else if (+stockValue.close > max) {
+            max = Math.ceil(+stockValue.close);
+        }
+
+        if (+stockValue.high < min) {
+            min = Math.floor(+stockValue.high);
+        } else if (+stockValue.high > max) {
+            max = Math.ceil(+stockValue.high);
+        }
+
+        if (+stockValue.low < min) {
+            min = Math.floor(+stockValue.low);
+        } else if (+stockValue.low > max) {
+            max = Math.ceil(+stockValue.low);
+        }
+
+        if (+stockValue.open < min) {
+            min = Math.floor(+stockValue.open);
+        } else if (+stockValue.open > max) {
+            max = Math.ceil(+stockValue.open);
+        }
+    });
+
+    return {
+        min,
+        max,
+    };
 }
