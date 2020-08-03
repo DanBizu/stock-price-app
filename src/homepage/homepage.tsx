@@ -30,7 +30,7 @@ export class Homepage extends React.Component<Props, State> {
         const { data, receivedData } = this.state;
 
         return (
-            <div>
+            <div id="homepage">
                 <h1> Homepage </h1>
                 <label>
                     Symbol
