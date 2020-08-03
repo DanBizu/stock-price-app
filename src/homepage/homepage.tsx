@@ -1,5 +1,5 @@
 import { Stock } from './interfaces/homepage';
-import { apiCall, initStockData } from './services/homepage.services';
+import { apiCall, initStockData, prepareData } from './services/homepage.services';
 import React from 'react';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
@@ -10,30 +10,6 @@ interface State {
     data: Stock;
     symbol: string;
 }
-
-const Xdata = [
-    {
-        name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-    },
-    {
-        name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-    },
-    {
-        name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-    },
-    {
-        name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-    },
-    {
-        name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-    },
-    {
-        name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-    },
-    {
-        name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-    },
-];
 
 export class Homepage extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -49,6 +25,8 @@ export class Homepage extends React.Component<Props, State> {
         const { data, symbol } = this.state;
         console.log('+++ data', data);
         console.log('+++ symbol', symbol);
+
+        prepareData(data);
         return (
             <div>
                 <h1> Homepage </h1>
@@ -64,18 +42,21 @@ export class Homepage extends React.Component<Props, State> {
                 <LineChart
                     width={500}
                     height={300}
-                    data={Xdata}
+                    data={prepareData(data)}
                     margin={{
                         top: 5, right: 30, left: 20, bottom: 5,
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
+                    <XAxis dataKey="date" />
+                    <YAxis domain={[90, 110]} allowDecimals={true} />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                    <Line type="monotone" dataKey="open" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="high" stroke="#d89284" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="low" stroke="#d8d584" activeDot={{ r: 8 }} />
+
+                    <Line type="monotone" dataKey="close" stroke="#82ca9d" />
                 </LineChart>
             </div>
         );
@@ -97,16 +78,5 @@ export class Homepage extends React.Component<Props, State> {
                 data,
             });
         });
-    }
-
-    /**
-     * Manage data
-     * Turn Time Series (<Daily/Weekly/Monthly>) into
-     * array so it can be used in the chart component
-     */
-    private prepareData() {
-        const { data } = this.state;
-
-        let timeSeries = Object.keys(data["Time Series (Daily)"])
     }
 }
