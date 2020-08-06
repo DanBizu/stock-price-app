@@ -46,9 +46,9 @@ export class Graph extends React.Component<Props, State> {
                     <YAxis domain={[min, max]} allowDecimals={true} />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="open" stroke="#8884d8" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="high" stroke="#d89284" activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="low" stroke="#d8d584" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="open" stroke="#8884d8" />
+                    <Line type="monotone" dataKey="high" stroke="#d89284" />
+                    <Line type="monotone" dataKey="low" stroke="#d8d584" />
 
                     <Line type="monotone" dataKey="close" stroke="#82ca9d" />
                 </LineChart>

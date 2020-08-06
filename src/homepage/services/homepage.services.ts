@@ -166,3 +166,5 @@ export function getLimits(data: GraphStockValues[]): Limits {
 export function getDisabledStatus(symbol: string): boolean {
     return symbol.length === 0 ? true : false;
 }
+
+export const TIME_SERIES_OPTIONS = [TIME_SERIES.DAILY, TIME_SERIES.WEEKLY, TIME_SERIES.MONTHLY];

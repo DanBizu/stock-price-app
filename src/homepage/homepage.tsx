@@ -6,18 +6,9 @@ import {
     TIME_SERIES,
     WeeklyStock
     } from './interfaces/homepage';
-import {
-    apiCall,
-    getDailyStockValues,
-    getDisabledStatus,
-    getLimits,
-    getMonthlyStockValues,
-    getWeeklyStockValues,
-    initDailyStock,
-    initMonthlyStock,
-    initWeeklyStock
-    } from './services/homepage.services';
+import * as services from './services/homepage.services';
 import { Graph } from '../graph/graph';
+import { Select } from '../shared/select/select';
 import React from 'react';
 
 interface Props { }
@@ -41,9 +32,9 @@ export class Homepage extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            dailyStock: initDailyStock(),
-            weeklyStock: initWeeklyStock(),
-            monthlyStock: initMonthlyStock(),
+            dailyStock: services.initDailyStock(),
+            weeklyStock: services.initWeeklyStock(),
+            monthlyStock: services.initMonthlyStock(),
             receivedData: false,
             symbol: '',
             timeSeries: TIME_SERIES.DAILY,
@@ -63,27 +54,25 @@ export class Homepage extends React.Component<Props, State> {
                     <input type="text" name="symbol" onChange={(e) => this.handleChange(e)} />
                 </label>
 
-                <label>
-                    Time Series
-                    <select name="timeSeries" onChange={(e) => this.handleSelect(e)}>
-                        <option value={TIME_SERIES.DAILY}>{TIME_SERIES.DAILY}</option>
-                        <option value={TIME_SERIES.WEEKLY}>{TIME_SERIES.WEEKLY}</option>
-                        <option value={TIME_SERIES.MONTHLY}>{TIME_SERIES.MONTHLY}</option>
-                    </select>
-                </label>
+                {/** Select Time Series */}
+                <Select label='Time Series'
+                    propertyName='timeSeries'
+                    options={services.TIME_SERIES_OPTIONS}
+                    onChange={(e) => this.handleSelect(e)} />
 
                 <p>A good place to find stock symbols is <a href="http://eoddata.com/stocklist/NYSE/A.htm" target="blank">here</a></p>
 
-                <button disabled={getDisabledStatus(symbol)}
+                {/** Get prices Button */}
+                <button disabled={services.getDisabledStatus(symbol)}
                     onClick={() => this.getStockPrices()}>
                     Get prices
                 </button>
 
-                {
+                {/** Graph */
                     receivedData &&
                     <Graph data={this.getStockValues()}
-                        min={getLimits(this.getStockValues()).min}
-                        max={getLimits(this.getStockValues()).max} />
+                        min={services.getLimits(this.getStockValues()).min}
+                        max={services.getLimits(this.getStockValues()).max} />
                 }
             </div>
         );
@@ -109,7 +98,7 @@ export class Homepage extends React.Component<Props, State> {
     private getStockPrices() {
         const { symbol, timeSeries } = this.state;
 
-        apiCall(symbol, timeSeries).then(data => this.assignByTimeSeries(data));
+        services.apiCall(symbol, timeSeries).then(data => this.assignByTimeSeries(data));
     }
 
     /** Assign data to the correct state property based on timeSeries */
@@ -160,9 +149,9 @@ export class Homepage extends React.Component<Props, State> {
         const { receivedTimeSeries, dailyStock, weeklyStock, monthlyStock } = this.state;
 
         switch (receivedTimeSeries) {
-            case TIME_SERIES.DAILY: return getDailyStockValues(dailyStock);
-            case TIME_SERIES.WEEKLY: return getWeeklyStockValues(weeklyStock);
-            case TIME_SERIES.MONTHLY: return getMonthlyStockValues(monthlyStock);
+            case TIME_SERIES.DAILY: return services.getDailyStockValues(dailyStock);
+            case TIME_SERIES.WEEKLY: return services.getWeeklyStockValues(weeklyStock);
+            case TIME_SERIES.MONTHLY: return services.getMonthlyStockValues(monthlyStock);
             default: return [];
         }
     }
