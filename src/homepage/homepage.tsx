@@ -9,6 +9,7 @@ import {
 import {
     apiCall,
     getDailyStockValues,
+    getDisabledStatus,
     getLimits,
     getMonthlyStockValues,
     getWeeklyStockValues,
@@ -52,7 +53,7 @@ export class Homepage extends React.Component<Props, State> {
     }
 
     public render() {
-        const { receivedData } = this.state;
+        const { receivedData, symbol } = this.state;
 
         return (
             <div id="homepage">
@@ -73,7 +74,10 @@ export class Homepage extends React.Component<Props, State> {
 
                 <p>A good place to find stock symbols is <a href="http://eoddata.com/stocklist/NYSE/A.htm" target="blank">here</a></p>
 
-                <button onClick={() => this.getStockPrices()}>Get prices</button>
+                <button disabled={getDisabledStatus(symbol)}
+                    onClick={() => this.getStockPrices()}>
+                    Get prices
+                </button>
 
                 {
                     receivedData &&

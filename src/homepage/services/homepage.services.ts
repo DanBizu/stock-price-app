@@ -162,3 +162,7 @@ export function getLimits(data: GraphStockValues[]): Limits {
         max,
     };
 }
+
+export function getDisabledStatus(symbol: string): boolean {
+    return symbol.length === 0 ? true : false;
+}
