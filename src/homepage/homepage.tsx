@@ -8,7 +8,8 @@ import {
     } from './interfaces/homepage';
 import * as services from './services/homepage.services';
 import { Graph } from '../graph/graph';
-import { Select } from '../shared/select/select';
+import { DatePicker } from '../shared/components/date-picker/date-picker';
+import { Select } from '../shared/components/select/select';
 import React from 'react';
 
 interface Props { }
@@ -74,6 +75,8 @@ export class Homepage extends React.Component<Props, State> {
                         min={services.getLimits(this.getStockValues()).min}
                         max={services.getLimits(this.getStockValues()).max} />
                 }
+
+                <DatePicker />
             </div>
         );
     }
