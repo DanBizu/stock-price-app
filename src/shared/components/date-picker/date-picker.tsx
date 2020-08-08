@@ -15,7 +15,7 @@ import React from 'react';
 
 interface Props { }
 
-interface State {
+export interface DatePickerState {
     clicked: Boolean;
     date: CalendarDay;
     displayedWeeks: number;
@@ -35,40 +35,33 @@ interface State {
 }
 
 /**
- * Datepicker component to display calendar.
+ * DatePicker component to display calendar.
  * Select a specific date.
  * Initially has the current date selected.
  */
-export class DatePicker extends React.Component<Props, State> {
+export class DatePicker extends React.Component<Props, DatePickerState> {
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
             ...initState(),
-            clicked: false,
-            // date: {} as CalendarDay,
-            // displayedWeeks: -1,
-            // currentMonth: -1,
-            // currentYear: -1,
-            // currentMonthDays: -1,
-            // currentMonthFirstDay: -1,
-            // currentMonthDates: [],
-            // prevMonth: {} as Month,
-            // daysFromPrevMonth: -1,
-            // prevMonthDays: -1,
-            // prevMonthDates: [],
-            // nextMonth: {} as Month,
-            // daysFromNextMonth: -1,
-            // nextMonthDates: [],
-            hasDateChanged: false,
         };
     }
 
     public render() {
-        let { clicked, date, currentMonth, currentYear, prevMonth, displayedWeeks,
-            prevMonthDates, currentMonthDates, nextMonthDates,
-            nextMonth } = this.state;
+        let {
+            clicked,
+            date,
+            currentMonth,
+            currentYear,
+            prevMonth,
+            displayedWeeks,
+            prevMonthDates,
+            currentMonthDates,
+            nextMonthDates,
+            nextMonth
+        } = this.state;
 
         return (
             <div.DatePicker data-cy='date-picker'>
@@ -127,78 +120,6 @@ export class DatePicker extends React.Component<Props, State> {
             </div.DatePicker>
         );
     }
-
-    // public componentDidMount() {
-    //     let state = this.initState();
-
-    //     this.setState({
-    //         ...state,
-    //     });
-    // }
-
-    // private initState() {
-    //     const today = new Date();
-    //     const date = {
-    //         day: padWithZero(today.getDate()),
-    //         month: padWithZero(today.getMonth()),
-    //         year: today.getFullYear(),
-    //     };
-    //     const displayedWeeks = 6;
-    //     const currentMonth = today.getMonth();
-    //     const currentYear = today.getFullYear();
-    //     const currentMonthDays = getMonthDays(currentMonth, currentYear);
-    //     const prevMonth = getPreviousMonth(currentMonth, currentYear);
-    //     const currentMonthFirstDay = getMonthFirstDay(currentMonth, currentYear);
-    //     const prevMonthDays = getMonthDays(prevMonth.month, prevMonth.year);
-    //     const daysFromPrevMonth = currentMonthFirstDay === 0 ? 6 : currentMonthFirstDay - 1;
-    //     const daysFromNextMonth = (displayedWeeks * 7) - (daysFromPrevMonth + currentMonthDays);
-
-    //     let prevMonthDates = new Array<CalendarDay>();
-    //     for (let index = 0; index < daysFromPrevMonth; index++) {
-    //         let day = index + 1 + (prevMonthDays - daysFromPrevMonth);
-
-    //         prevMonthDates.push({
-    //             year: prevMonth.year,
-    //             month: padWithZero(prevMonth.month),
-    //             day: padWithZero(day),
-    //         } as CalendarDay);
-    //     }
-
-    //     let currentMonthDates = new Array<CalendarDay>();
-    //     for (let index = 0; index < currentMonthDays; index++) {
-    //         currentMonthDates.push({
-    //             year: currentYear,
-    //             month: padWithZero(currentMonth),
-    //             day: padWithZero(index + 1),
-    //         });
-    //     }
-
-    //     let nextMonthDates = new Array<CalendarDay>();
-    //     for (let index = 0; index < daysFromNextMonth; index++) {
-    //         nextMonthDates.push({
-    //             year: getNextMonth(currentMonth, currentYear).year,
-    //             month: padWithZero(getNextMonth(currentMonth, currentYear).month),
-    //             day: padWithZero(index + 1),
-    //         });
-    //     }
-
-    //     return {
-    //         date,
-    //         displayedWeeks,
-    //         currentMonth,
-    //         currentYear,
-    //         currentMonthDays,
-    //         currentMonthFirstDay,
-    //         currentMonthDates,
-    //         prevMonth,
-    //         daysFromPrevMonth,
-    //         prevMonthDays,
-    //         prevMonthDates,
-    //         nextMonth: getNextMonth(currentMonth, currentYear),
-    //         daysFromNextMonth,
-    //         nextMonthDates,
-    //     };
-    // }
 
     private displayCalendar() {
         this.setState(prevState => ({

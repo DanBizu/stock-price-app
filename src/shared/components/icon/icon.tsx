@@ -7,15 +7,11 @@ interface Props {
 }
 
 export const Icon: React.FunctionComponent<Props> = (props: Props) => {
-    const { icon, iconHovered } = props;
+    const { icon, onPress } = props;
 
     return (
-        <div id="icon">
-            <p>{icon}</p>
-            {
-                !!iconHovered &&
-                <p>{iconHovered}</p>
-            }
-        </div>
+        <button id="icon" onClick={onPress}>
+            <img src={require(`../../assets${icon}`)} alt='icon'/>
+        </button>
     );
 }

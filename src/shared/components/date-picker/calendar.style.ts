@@ -65,7 +65,7 @@ export const InactiveCell = styled.div`
     align-items: center;
 `;
 
-export const InactiveCellContent = styled.text`
+export const InactiveCellContent = styled.span`
     color: rgba(0, 0, 0, 0.1);
 `;
 
@@ -93,7 +93,7 @@ export const HighlightedCell = styled.div`
     align-items: center;
 `;
 
-export const ActiveCellContent = styled.text`
+export const ActiveCellContent = styled.span`
     color: rgba(0, 0, 0, 0.6);
     font-weight: 600;
 `;

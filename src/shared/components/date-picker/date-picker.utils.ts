@@ -1,3 +1,4 @@
+import { DatePickerState } from './date-picker';
 import { CalendarDay } from '../../interfaces/calendar';
 
 export function getNextMonth(month: number, year: number) {
@@ -39,7 +40,7 @@ export function padWithZero(value: number) {
 }
 
 
-export function initState() {
+export function initState(): DatePickerState {
     const today = new Date();
     const date = {
         day: padWithZero(today.getDate()),
@@ -86,6 +87,8 @@ export function initState() {
     }
 
     return {
+        clicked: false,
+        hasDateChanged: false,
         date,
         displayedWeeks,
         currentMonth,
