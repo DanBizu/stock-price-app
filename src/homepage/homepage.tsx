@@ -76,6 +76,7 @@ export class Homepage extends React.Component<Props, State> {
                         max={services.getLimits(this.getStockValues()).max} />
                 }
 
+                {/** Select time range */}
                 <DatePicker />
             </div>
         );
