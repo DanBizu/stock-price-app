@@ -1,7 +1,9 @@
 import { DatePickerState } from './date-picker';
-import { CalendarDay } from '../../interfaces/calendar';
+import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 
-export function getNextMonth(month: number, year: number) {
+export const DISPLAY_WEEKS = 6;
+
+export function getNextMonth(month: number, year: number): CalendarMonth {
     let nextMonth = {
         month: month === 11 ? 0 : month + 1,
         year: month === 11 ? year + 1 : year,
@@ -9,7 +11,7 @@ export function getNextMonth(month: number, year: number) {
     return nextMonth;
 }
 
-export function getPreviousMonth(month: number, year: number) {
+export function getPreviousMonth(month: number, year: number): CalendarMonth {
     let prevMonth = {
         month: month === 0 ? 11 : month - 1,
         year: month === 0 ? year - 1 : year,
@@ -17,11 +19,13 @@ export function getPreviousMonth(month: number, year: number) {
     return prevMonth;
 }
 
+/** What day of the weeks was this month's first day */
 export function getMonthFirstDay(month: number, year: number) {
     return new Date(`${year}-${padWithZero(month + 1)}-01`).getDay();
 }
 
-export function getMonthDays(month: number, year: number) {
+/** Get the number of the days for each month */
+export function getMonthDaysNumber(month: number, year: number) {
     const months30 = [3, 5, 8, 10];
     const leapYear = (year % 400 === 0) || ((year % 4 === 0) && (year % 100 !== 0));
 
@@ -41,19 +45,19 @@ export function padWithZero(value: number) {
 
 
 export function initState(): DatePickerState {
-    const today = new Date();
+    const now = new Date();
     const date = {
-        day: padWithZero(today.getDate()),
-        month: padWithZero(today.getMonth()),
-        year: today.getFullYear(),
+        day: padWithZero(now.getDate()),
+        month: padWithZero(now.getMonth()),
+        year: now.getFullYear(),
     };
-    const displayedWeeks = 6;
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
-    const currentMonthDays = getMonthDays(currentMonth, currentYear);
+    const displayedWeeks = DISPLAY_WEEKS;
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    const currentMonthDays = getMonthDaysNumber(currentMonth, currentYear);
     const prevMonth = getPreviousMonth(currentMonth, currentYear);
     const currentMonthFirstDay = getMonthFirstDay(currentMonth, currentYear);
-    const prevMonthDays = getMonthDays(prevMonth.month, prevMonth.year);
+    const prevMonthDays = getMonthDaysNumber(prevMonth.month, prevMonth.year);
     const daysFromPrevMonth = currentMonthFirstDay === 0 ? 6 : currentMonthFirstDay - 1;
     const daysFromNextMonth = (displayedWeeks * 7) - (daysFromPrevMonth + currentMonthDays);
 

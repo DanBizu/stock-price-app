@@ -1,30 +1,29 @@
 import { MONTHS, WEEK_DAYS } from './calendar.const';
 import * as div from './calendar.style';
-import { CalendarDay, Month } from '../../interfaces/calendar';
+import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 import { Icon } from '../icon/icon';
 import * as React from 'react';
 
-interface Props {
+export interface CalendarProps {
     selectedDate: CalendarDay;
     handleSelectedDate: (date: CalendarDay) => void;
     displayedWeeks: number;
     currentMonth: number;
     currentYear: number;
     currentMonthDates: CalendarDay[];
-    prevMonth: Month;
+    prevMonth: CalendarMonth;
     prevMonthDates: CalendarDay[];
-    nextMonth: Month;
+    nextMonth: CalendarMonth;
     nextMonthDates: CalendarDay[];
-    changeToPrevMonth: (prevMonth: Month, displayedWeeks: number) => void;
+    changeToPrevMonth: (prevMonth: CalendarMonth, displayedWeeks: number) => void;
     changeToNextMonth: (currentMonth: number, currentYear: number,
-        nextMonth: Month, displayedWeeks: number) => void;
-    testID?: string;
+        nextMonth: CalendarMonth, displayedWeeks: number) => void;
 }
 
 /**
  * Calendar component to display calendar.
  */
-export const Calendar: React.FunctionComponent<Props> = (props: Props) => {
+export const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) => {
     const {
         currentYear,
         currentMonth,
@@ -39,6 +38,7 @@ export const Calendar: React.FunctionComponent<Props> = (props: Props) => {
         handleSelectedDate,
         nextMonthDates,
     } = props;
+
     return (
         <div.Calendar data-cy='calendar'>
             <div.CalendarMonthHeader>

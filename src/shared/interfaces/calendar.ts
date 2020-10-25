@@ -1,4 +1,4 @@
-export interface Month {
+export interface CalendarMonth {
     month: number;
     year: number;
 }

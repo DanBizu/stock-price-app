@@ -1,15 +1,15 @@
-import { Calendar } from './calendar';
+import { Calendar, CalendarProps } from './calendar';
 import { MONTHS } from './calendar.const';
 import * as div from './date-picker.style';
 import {
-    getMonthDays,
+    getMonthDaysNumber,
     getMonthFirstDay,
     getNextMonth,
     getPreviousMonth,
     initState,
     padWithZero
     } from './date-picker.utils';
-import { CalendarDay, Month } from '../../interfaces/calendar';
+import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 import { Icon } from '../icon/icon';
 import React from 'react';
 
@@ -24,11 +24,11 @@ export interface DatePickerState {
     currentMonthDays: number;
     currentMonthFirstDay: number;
     currentMonthDates: CalendarDay[];
-    prevMonth: Month;
+    prevMonth: CalendarMonth;
     daysFromPrevMonth: number;
     prevMonthDays: number;
     prevMonthDates: CalendarDay[];
-    nextMonth: Month;
+    nextMonth: CalendarMonth;
     daysFromNextMonth: number;
     nextMonthDates: CalendarDay[];
     hasDateChanged: Boolean;
@@ -50,18 +50,9 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
     }
 
     public render() {
-        let {
-            clicked,
-            date,
-            currentMonth,
-            currentYear,
-            prevMonth,
-            displayedWeeks,
-            prevMonthDates,
-            currentMonthDates,
-            nextMonthDates,
-            nextMonth
-        } = this.state;
+        const { clicked, date } = this.state;
+
+        console.log(this.state);
 
         return (
             <div.DatePicker data-cy='date-picker'>
@@ -97,25 +88,7 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
 
                 {
                     clicked &&
-                    <Calendar testID='calendar'
-                        selectedDate={date}
-                        currentMonth={currentMonth}
-                        currentYear={currentYear}
-                        prevMonth={prevMonth}
-                        displayedWeeks={displayedWeeks}
-                        prevMonthDates={prevMonthDates}
-                        currentMonthDates={currentMonthDates}
-                        nextMonthDates={nextMonthDates}
-                        nextMonth={nextMonth}
-                        handleSelectedDate={(date: CalendarDay) => this.changeSelectedDate(date)}
-                        changeToPrevMonth={(prevMonth: Month, displayedWeeks: number) =>
-                            this.changeToPrevMonth(prevMonth, displayedWeeks)
-                        }
-                        changeToNextMonth={(currentMonth: number, currentYear: number,
-                            nextMonth: Month, displayedWeeks: number) =>
-                            this.changeToNextMonth(currentMonth, currentYear, nextMonth, displayedWeeks)
-                        }
-                    />
+                    <Calendar {...this.getCalendarProps()} />
                 }
             </div.DatePicker>
         );
@@ -136,14 +109,13 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
         }));
     }
 
-    private changeToPrevMonth(prevMonth: Month, displayedWeeks: number) {
-
+    private changeToPrevMonth(prevMonth: CalendarMonth, displayedWeeks: number) {
         const currentMonth = prevMonth.month;
         const currentYear = prevMonth.year;
-        const currentMonthDays = getMonthDays(currentMonth, currentYear);
+        const currentMonthDays = getMonthDaysNumber(currentMonth, currentYear);
         const changedPrevMonth = getPreviousMonth(currentMonth, currentYear);
         const currentMonthFirstDay = getMonthFirstDay(currentMonth, currentYear);
-        const prevMonthDays = getMonthDays(changedPrevMonth.month, changedPrevMonth.year);
+        const prevMonthDays = getMonthDaysNumber(changedPrevMonth.month, changedPrevMonth.year);
         const daysFromPrevMonth = currentMonthFirstDay === 0 ? 6 : currentMonthFirstDay - 1;
         const daysFromNextMonth = (displayedWeeks * 7) - (daysFromPrevMonth + currentMonthDays);
 
@@ -156,7 +128,7 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
                 year: prevMonth.year,
                 month: padWithZero(prevMonth.month),
                 day: padWithZero(day),
-            } as CalendarDay);
+            });
         }
 
         // Generate the dates from the current month
@@ -199,13 +171,13 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
         }));
     }
 
-    private changeToNextMonth(currentMonth: number, currentYear: number, nextMonth: Month, displayedWeeks: number) {
+    private changeToNextMonth(currentMonth: number, currentYear: number, nextMonth: CalendarMonth, displayedWeeks: number) {
 
         const changedCurrentMonth = nextMonth.month;
         const changedCurrentYear = nextMonth.year;
-        const currentMonthDays = getMonthDays(changedCurrentMonth, changedCurrentYear);
+        const currentMonthDays = getMonthDaysNumber(changedCurrentMonth, changedCurrentYear);
         const currentMonthFirstDay = getMonthFirstDay(changedCurrentMonth, changedCurrentYear);
-        const prevMonthDays = getMonthDays(currentMonth, currentYear);
+        const prevMonthDays = getMonthDaysNumber(currentMonth, currentYear);
         const daysFromPrevMonth = currentMonthFirstDay === 0 ? 6 : currentMonthFirstDay - 1;
         const daysFromNextMonth = (displayedWeeks * 7) - (daysFromPrevMonth + currentMonthDays);
 
@@ -259,5 +231,34 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
             daysFromNextMonth,
             nextMonthDates,
         }));
+    }
+
+    private getCalendarProps(): CalendarProps {
+        const {
+            date,
+            currentMonth,
+            currentYear,
+            prevMonth,
+            displayedWeeks,
+            prevMonthDates,
+            currentMonthDates,
+            nextMonthDates,
+            nextMonth
+        } = this.state;
+
+        return {
+            selectedDate: date,
+            currentMonth: currentMonth,
+            currentYear: currentYear,
+            prevMonth: prevMonth,
+            displayedWeeks: displayedWeeks,
+            prevMonthDates: prevMonthDates,
+            currentMonthDates: currentMonthDates,
+            nextMonthDates: nextMonthDates,
+            nextMonth: nextMonth,
+            handleSelectedDate: (date: CalendarDay) => this.changeSelectedDate(date),
+            changeToPrevMonth: (prevMonth: CalendarMonth, displayedWeeks: number) => this.changeToPrevMonth(prevMonth, displayedWeeks),
+            changeToNextMonth: (currentMonth: number, currentYear: number, nextMonth: CalendarMonth, displayedWeeks: number) => this.changeToNextMonth(currentMonth, currentYear, nextMonth, displayedWeeks)
+        }
     }
 }
