@@ -1,26 +1,28 @@
 import { Calendar, CalendarProps } from './calendar';
 import { MONTHS } from './calendar.const';
 import * as div from './date-picker.style';
-import {
-    getMonthDaysNumber,
-    getMonthFirstDay,
-    getNextMonth,
-    getPreviousMonth,
-    initState,
-    padWithZero
-    } from './date-picker.utils';
 import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 import { Icon } from '../icon/icon';
 import React from 'react';
+import {
+    fillFirstWeekCount,
+    fillLastWeekCount,
+    getCurrentMonthDates,
+    getMonthDaysCount,
+    getMonthFirstDay,
+    getNextMonth,
+    getNextMonthDates,
+    getPreviousMonth,
+    getPreviousMonthDates,
+    initState,
+} from './date-picker.utils';
 
 interface Props { }
 
 export interface DatePickerState {
     clicked: Boolean;
     date: CalendarDay;
-    displayedWeeks: number;
-    currentMonth: number;
-    currentYear: number;
+    currentMonth: CalendarMonth;
     currentMonthDays: number;
     currentMonthFirstDay: number;
     currentMonthDates: CalendarDay[];
@@ -109,125 +111,70 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
         }));
     }
 
-    private changeToPrevMonth(prevMonth: CalendarMonth, displayedWeeks: number) {
-        const currentMonth = prevMonth.month;
-        const currentYear = prevMonth.year;
-        const currentMonthDays = getMonthDaysNumber(currentMonth, currentYear);
-        const changedPrevMonth = getPreviousMonth(currentMonth, currentYear);
-        const currentMonthFirstDay = getMonthFirstDay(currentMonth, currentYear);
-        const prevMonthDays = getMonthDaysNumber(changedPrevMonth.month, changedPrevMonth.year);
-        const daysFromPrevMonth = currentMonthFirstDay === 0 ? 6 : currentMonthFirstDay - 1;
-        const daysFromNextMonth = (displayedWeeks * 7) - (daysFromPrevMonth + currentMonthDays);
+    private changeToPrevMonth(prevMonth: CalendarMonth) {
+        const currentMonth: CalendarMonth = prevMonth;
+        const currentMonthDays = getMonthDaysCount(prevMonth);
+        const updatedPrevMonth = getPreviousMonth(currentMonth);
+        const currentMonthFirstDay = getMonthFirstDay(currentMonth);
+        const prevMonthDays = getMonthDaysCount(updatedPrevMonth);
+        const daysFromPrevMonth = fillFirstWeekCount(currentMonthFirstDay);
+        const daysFromNextMonth = fillLastWeekCount(daysFromPrevMonth, currentMonthDays);
 
         // Generate the dates from previous month to fill the 6 displayed weeks
-        let prevMonthDates = new Array<CalendarDay>();
-        for (let index = 0; index < daysFromPrevMonth; index++) {
-            let day = index + 1 + (prevMonthDays - daysFromPrevMonth);
-
-            prevMonthDates.push({
-                year: prevMonth.year,
-                month: padWithZero(prevMonth.month),
-                day: padWithZero(day),
-            });
-        }
+        const prevMonthDates: CalendarDay[] = getPreviousMonthDates(daysFromPrevMonth, updatedPrevMonth);
 
         // Generate the dates from the current month
-        let currentMonthDates = new Array<CalendarDay>();
-        for (let index = 0; index < currentMonthDays; index++) {
-            currentMonthDates.push({
-                year: currentYear,
-                month: padWithZero(currentMonth),
-                day: padWithZero(index + 1),
-            });
-        }
+        const currentMonthDates = getCurrentMonthDates(currentMonth);
 
         // Generate the dates from next month to fill the 6 displayed weeks
-        let nextMonthDates = new Array<CalendarDay>();
-        for (let index = 0; index < daysFromNextMonth; index++) {
-            nextMonthDates.push({
-                year: getNextMonth(currentMonth, currentYear).year,
-                month: padWithZero(getNextMonth(currentMonth, currentYear).month),
-                day: padWithZero(index + 1),
-            });
-        }
+        const nextMonth = getNextMonth(currentMonth);
+        const nextMonthDates = getNextMonthDates(daysFromNextMonth, nextMonth);
 
         this.setState(prevState => ({
             ...this.state,
             currentMonth,
-            currentYear,
             currentMonthDays,
             currentMonthFirstDay,
             currentMonthDates,
-            prevMonth: changedPrevMonth,
+            prevMonth: updatedPrevMonth,
             daysFromPrevMonth,
             prevMonthDays,
             prevMonthDates,
-            nextMonth: {
-                month: prevState.currentMonth,
-                year: prevState.currentYear,
-            },
+            nextMonth: { ...prevState.currentMonth },
             daysFromNextMonth,
             nextMonthDates,
         }));
     }
 
-    private changeToNextMonth(currentMonth: number, currentYear: number, nextMonth: CalendarMonth, displayedWeeks: number) {
-
-        const changedCurrentMonth = nextMonth.month;
-        const changedCurrentYear = nextMonth.year;
-        const currentMonthDays = getMonthDaysNumber(changedCurrentMonth, changedCurrentYear);
-        const currentMonthFirstDay = getMonthFirstDay(changedCurrentMonth, changedCurrentYear);
-        const prevMonthDays = getMonthDaysNumber(currentMonth, currentYear);
-        const daysFromPrevMonth = currentMonthFirstDay === 0 ? 6 : currentMonthFirstDay - 1;
-        const daysFromNextMonth = (displayedWeeks * 7) - (daysFromPrevMonth + currentMonthDays);
+    private switchToNextMonth(currentMonth: CalendarMonth, nextMonth: CalendarMonth) {
+        const updatedCurrentMonth = nextMonth;
+        const currentMonthDays = getMonthDaysCount(nextMonth);
+        const currentMonthFirstDay = getMonthFirstDay(updatedCurrentMonth);
+        const prevMonthDays = getMonthDaysCount(currentMonth);
+        const daysFromPrevMonth = fillFirstWeekCount(currentMonthFirstDay);
+        const daysFromNextMonth = fillLastWeekCount(daysFromPrevMonth, currentMonthDays);
 
         // Generate the dates from previous month to fill the 6 displayed weeks
-        let prevMonthDates = new Array<CalendarDay>();
-        for (let index = 0; index < daysFromPrevMonth; index++) {
-            let day = index + 1 + (prevMonthDays - daysFromPrevMonth);
-
-            prevMonthDates.push({
-                year: currentYear,
-                month: padWithZero(currentMonth),
-                day: padWithZero(day),
-            } as CalendarDay);
-        }
+        const prevMonthDates: CalendarDay[] = getPreviousMonthDates(daysFromPrevMonth, currentMonth);
 
         // Generate the dates from the current month
-        let currentMonthDates = new Array<CalendarDay>();
-        for (let index = 0; index < currentMonthDays; index++) {
-            currentMonthDates.push({
-                year: changedCurrentYear,
-                month: padWithZero(changedCurrentMonth),
-                day: padWithZero(index + 1),
-            });
-        }
+        const currentMonthDates = getCurrentMonthDates(updatedCurrentMonth);
 
         // Generate the dates from next month to fill the 6 displayed weeks
-        let nextMonthDates = new Array<CalendarDay>();
-        for (let index = 0; index < daysFromNextMonth; index++) {
-            nextMonthDates.push({
-                year: getNextMonth(changedCurrentMonth, changedCurrentYear).year,
-                month: padWithZero(getNextMonth(changedCurrentMonth, changedCurrentYear).month),
-                day: padWithZero(index + 1),
-            });
-        }
+        const updatedNextMonth = getNextMonth(updatedCurrentMonth);
+        const nextMonthDates = getNextMonthDates(daysFromNextMonth, updatedNextMonth);
 
         this.setState(prevState => ({
             ...this.state,
-            currentMonth: changedCurrentMonth,
-            currentYear: changedCurrentYear,
+            currentMonth: updatedCurrentMonth,
             currentMonthDays,
             currentMonthFirstDay,
             currentMonthDates,
-            prevMonth: {
-                month: prevState.currentMonth,
-                year: prevState.currentYear,
-            },
+            prevMonth: { ...prevState.currentMonth },
             daysFromPrevMonth,
             prevMonthDays,
             prevMonthDates,
-            nextMonth: getNextMonth(changedCurrentMonth, changedCurrentYear),
+            nextMonth: updatedNextMonth,
             daysFromNextMonth,
             nextMonthDates,
         }));
@@ -237,9 +184,7 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
         const {
             date,
             currentMonth,
-            currentYear,
             prevMonth,
-            displayedWeeks,
             prevMonthDates,
             currentMonthDates,
             nextMonthDates,
@@ -248,17 +193,15 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
 
         return {
             selectedDate: date,
-            currentMonth: currentMonth,
-            currentYear: currentYear,
-            prevMonth: prevMonth,
-            displayedWeeks: displayedWeeks,
-            prevMonthDates: prevMonthDates,
-            currentMonthDates: currentMonthDates,
-            nextMonthDates: nextMonthDates,
-            nextMonth: nextMonth,
+            currentMonth,
+            prevMonth,
+            prevMonthDates,
+            currentMonthDates,
+            nextMonthDates,
+            nextMonth,
             handleSelectedDate: (date: CalendarDay) => this.changeSelectedDate(date),
-            changeToPrevMonth: (prevMonth: CalendarMonth, displayedWeeks: number) => this.changeToPrevMonth(prevMonth, displayedWeeks),
-            changeToNextMonth: (currentMonth: number, currentYear: number, nextMonth: CalendarMonth, displayedWeeks: number) => this.changeToNextMonth(currentMonth, currentYear, nextMonth, displayedWeeks)
+            changeToPrevMonth: (prevMonth: CalendarMonth) => this.changeToPrevMonth(prevMonth),
+            changeToNextMonth: (currentMonth: CalendarMonth, nextMonth: CalendarMonth) => this.switchToNextMonth(currentMonth, nextMonth)
         }
     }
 }

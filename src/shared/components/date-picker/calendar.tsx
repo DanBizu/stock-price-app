@@ -7,17 +7,14 @@ import * as React from 'react';
 export interface CalendarProps {
     selectedDate: CalendarDay;
     handleSelectedDate: (date: CalendarDay) => void;
-    displayedWeeks: number;
-    currentMonth: number;
-    currentYear: number;
+    currentMonth: CalendarMonth;
     currentMonthDates: CalendarDay[];
     prevMonth: CalendarMonth;
     prevMonthDates: CalendarDay[];
     nextMonth: CalendarMonth;
     nextMonthDates: CalendarDay[];
-    changeToPrevMonth: (prevMonth: CalendarMonth, displayedWeeks: number) => void;
-    changeToNextMonth: (currentMonth: number, currentYear: number,
-        nextMonth: CalendarMonth, displayedWeeks: number) => void;
+    changeToPrevMonth: (prevMonth: CalendarMonth) => void;
+    changeToNextMonth: (currentMonth: CalendarMonth, nextMonth: CalendarMonth) => void;
 }
 
 /**
@@ -25,10 +22,8 @@ export interface CalendarProps {
  */
 export const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) => {
     const {
-        currentYear,
         currentMonth,
         prevMonth,
-        displayedWeeks,
         changeToNextMonth,
         changeToPrevMonth,
         nextMonth,
@@ -45,25 +40,25 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
 
                 <div.CalendarMonthContent>
                     <div.CalendarMonthText data-cy='month'>
-                        {`${Object.keys(MONTHS)[currentMonth]} `}
+                        {`${Object.keys(MONTHS)[currentMonth.month]} `}
                     </div.CalendarMonthText>
 
                     <div.CalendarMonthText data-cy='year'>
-                        {currentYear}
+                        {currentMonth.year}
                     </div.CalendarMonthText>
 
                 </div.CalendarMonthContent>
 
                 <div.CalendarHeaderIcons>
                     <Icon
-                        onPress={() => changeToPrevMonth(prevMonth, displayedWeeks)}
+                        onPress={() => changeToPrevMonth(prevMonth)}
                         icon='/calendar/chevron_left.png'
                         iconHovered='/calendar/chevron_left.png' />
                 </div.CalendarHeaderIcons>
 
                 <div.CalendarHeaderIcons>
                     <Icon
-                        onPress={() => changeToNextMonth(currentMonth, currentYear, nextMonth, displayedWeeks)}
+                        onPress={() => changeToNextMonth(currentMonth, nextMonth)}
                         icon='/calendar/chevron_right.png'
                         iconHovered='/calendar/chevron_right.png' />
                 </div.CalendarHeaderIcons>
