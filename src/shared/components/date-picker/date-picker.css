@@ -1,0 +1,21 @@
+#date-picker {
+    width: 300px;
+}
+
+#selected-date {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 40px;
+}
+
+#date {
+    margin: auto;
+    font-weight: 600;
+}
+
+#extend-calendar {
+    display: flex;
+    justify-self: flex-end;
+    justify-content: flex-end;
+}

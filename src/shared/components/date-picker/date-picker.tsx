@@ -1,6 +1,6 @@
 import { Calendar, CalendarProps } from './calendar';
 import { MONTHS } from './calendar.const';
-import * as div from './date-picker.style';
+import './date-picker.css';
 import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 import { Icon } from '../icon/icon';
 import React from 'react';
@@ -55,42 +55,33 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
         const { clicked, date } = this.state;
 
         return (
-            <div.DatePicker data-cy='date-picker'>
+            <div id='date-picker'>
+                {/** Selected date */}
+                <div id='selected-date'>
 
-                <div.Date>
-                    <div.Fill>
-                        <div.HeaderContent> Datepicker </div.HeaderContent>
-                    </div.Fill>
+                    {/** Date */}
+                    <div id='date'>
+                        {Object.keys(MONTHS)[+(date.month)]}
+                        &nbsp;
+                        {date.day}
+                        &nbsp;
+                        {date.year}
+                    </div>
 
-                    <div.Day>
-                        <div.HeaderContent data-cy='day'> {date.day} </div.HeaderContent>
-                    </div.Day>
-
-                    <div.Month>
-                        <div.HeaderContent data-cy='month'>
-                            {Object.keys(MONTHS)[+(date.month)]}
-                        </div.HeaderContent>
-                    </div.Month>
-
-                    <div.Year>
-                        <div.HeaderContent data-cy='year'> {date.year} </div.HeaderContent>
-                    </div.Year>
-
-                    <div.Icon data-cy='open-calendar'>
-                        <Icon
+                    {/** Open calendar */}
+                    <div id='extend-calendar'>
+                        <Icon icon='/datepicker/arrow_drop_down_black.png'
                             onPress={() => this.displayCalendar()}
-                            icon='/datepicker/arrow_drop_down_black.png'
-                            iconHovered='/datepicker/arrow_drop_down_black.png'
-                        />
-                    </div.Icon>
+                            iconHovered='/datepicker/arrow_drop_down_black.png' />
+                    </div>
+                </div>
 
-                </div.Date>
-
+                {/** Calendar */}
                 {
                     clicked &&
                     <Calendar {...this.getCalendarProps()} />
                 }
-            </div.DatePicker>
+            </div>
         );
     }
 
@@ -102,11 +93,10 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
     }
 
     private changeSelectedDate(date: CalendarDay) {
-        this.setState(prevState => ({
+        this.setState({
             ...this.state,
             date,
-            clicked: !prevState.clicked,
-        }));
+        });
     }
 
     private switchToPrevMonth(prevMonth: CalendarMonth) {

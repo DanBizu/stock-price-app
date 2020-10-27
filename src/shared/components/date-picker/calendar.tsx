@@ -18,7 +18,7 @@ export interface CalendarProps {
 }
 
 /**
- * Calendar.
+ * The table with the dates. Handles selection for other date.
  */
 export const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) => {
     const {
