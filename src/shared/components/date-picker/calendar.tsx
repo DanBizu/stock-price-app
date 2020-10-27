@@ -42,12 +42,14 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
                     {`${Object.keys(MONTHS)[currentMonth.month]} ${currentMonth.year}`}
                 </div>
 
+                {/** Switch to previous month */}
                 <div className='nav-month'>
                     <Icon icon='/calendar/chevron_left.png'
                         onPress={() => changeToPrevMonth(prevMonth)}
                         iconHovered='/calendar/chevron_left.png' />
                 </div>
 
+                {/** Switch to next month */}
                 <div className='nav-month'>
                     <Icon icon='/calendar/chevron_right.png'
                         onPress={() => changeToNextMonth(currentMonth, nextMonth)}
@@ -55,22 +57,24 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
                 </div>
             </div>
 
-            <div.WeekdaysHeader>
-                {Object.keys(WEEK_DAYS).map((day, key) =>
-                    <div.WeekdaysCell key={key}>
-                        {WEEK_DAYS[day]}
-                    </div.WeekdaysCell>
-                )}
-            </div.WeekdaysHeader>
+            {/** Weekdays */}
+            <div className='weekdays'>
+                {
+                    Object.keys(WEEK_DAYS).map((day, key) =>
+                        <div key={key} className='weekday-cell'>
+                            {WEEK_DAYS[day]}
+                        </div>
+                    )
+                }
+            </div>
 
-            <div.DatesTable>
+            <div className='table'>
+                {/** Fill first week with days from previous month */}
                 {
                     !!prevMonthDates.length && prevMonthDates.map((date, key) =>
-                        <div.InactiveCell key={key}>
-                            <div.InactiveCellContent>
-                                {date.day}
-                            </div.InactiveCellContent>
-                        </div.InactiveCell>
+                        <div key={key} className='cell inactive'>
+                            {date.day}
+                        </div>
                     )
                 }
 
@@ -111,7 +115,7 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
                         </div.InactiveCell>
                     )
                 }
-            </div.DatesTable>
+            </div>
         </div>
     );
 }

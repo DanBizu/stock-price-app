@@ -1,11 +1,11 @@
 export const WEEK_DAYS: { [key: string]: string } = {
+    Sunday: 'Sun',
     Monday: 'Mon',
     Tuesday: 'Tue',
     Wednesday: 'Wed',
     Thursday: 'Thu',
     Friday: 'Fri',
     Saturday: 'Sat',
-    Sunday: 'Sun',
 };
 
 export const MONTHS: { [key: string]: string } = {

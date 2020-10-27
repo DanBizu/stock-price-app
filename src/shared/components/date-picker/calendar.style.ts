@@ -25,32 +25,32 @@ import styled from 'styled-components';
 //     flex-grow: 1;
 // `;
 
-export const WeekdaysHeader = styled.div`
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-`;
+// export const WeekdaysHeader = styled.div`
+//     width: 100%;
+//     display: flex;
+//     flex-flow: row nowrap;
+// `;
 
-export const WeekdaysCell = styled.div`
-    flex-basis: calc((100% — 2px) / 7);
-    height: 44px;
-    justify-content: center;
-    align-items: center;
-`;
+// export const WeekdaysCell = styled.div`
+//     flex-basis: calc((100% — 2px) / 7);
+//     height: 44px;
+//     justify-content: center;
+//     align-items: center;
+// `;
 
-export const DatesTable = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    border-right-color: rgba(0, 0, 0, 0.1);
-    border-right-style: solid;
-    border-right-width: 0.5px;
-    border-bottom-color: rgba(0, 0, 0, 0.1);
-    border-bottom-style: solid;
-    border-bottom-width: 0.5px;
-    border-left-color: rgba(0, 0, 0, 0.1);
-    border-left-style: solid;
-    border-left-width: 0.5px;
-`;
+// export const DatesTable = styled.div`
+//     display: flex;
+//     flex-flow: row wrap;
+//     border-right-color: rgba(0, 0, 0, 0.1);
+//     border-right-style: solid;
+//     border-right-width: 0.5px;
+//     border-bottom-color: rgba(0, 0, 0, 0.1);
+//     border-bottom-style: solid;
+//     border-bottom-width: 0.5px;
+//     border-left-color: rgba(0, 0, 0, 0.1);
+//     border-left-style: solid;
+//     border-left-width: 0.5px;
+// `;
 
 export const InactiveCell = styled.div`
     border-top-color: rgba(0, 0, 0, 0.1);

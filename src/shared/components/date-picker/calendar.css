@@ -1,12 +1,14 @@
 .calendar {
     width: 300px;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
 }
 
 .header {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    height: 40px;
 }
 
 .month {
@@ -14,11 +16,44 @@
     flex-grow: 4;
     justify-content: center;
     text-align: center;
-    font-weight: 600;
 }
 
 .nav-month {
     flex-grow: 1;
     justify-content: center;
     align-items: center;
+}
+
+.weekdays {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.weekday-cell {
+    display: flex;
+    width: calc((100% — 2px) / 7);
+    height: 44px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.table {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+}
+
+.cell {
+    display: inline-grid;
+    grid-column-start: auto;
+    grid-column-end: auto;
+    grid-row-start: auto;
+    grid-row-end: auto;
+    justify-self: center;
+    align-self: center;
+}
+
+.inactive {
+    color: rgba(0, 0, 0, 0.1);
 }
