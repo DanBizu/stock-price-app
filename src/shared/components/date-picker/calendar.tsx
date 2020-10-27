@@ -1,13 +1,12 @@
 import { MONTHS, WEEK_DAYS } from './calendar.const';
 import './calendar.css';
-import * as div from './calendar.style';
 import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 import { Icon } from '../icon/icon';
 import * as React from 'react';
 
 export interface CalendarProps {
     selectedDate: CalendarDay;
-    handleSelectedDate: (date: CalendarDay) => void;
+    selectDate: (date: CalendarDay) => void;
     currentMonth: CalendarMonth;
     currentMonthDates: CalendarDay[];
     prevMonth: CalendarMonth;
@@ -31,7 +30,7 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
         prevMonthDates,
         currentMonthDates,
         selectedDate,
-        handleSelectedDate,
+        selectDate,
         nextMonthDates,
     } = props;
 
@@ -82,7 +81,7 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
                 {/** Current month dates */}
                 {
                     !!currentMonthDates.length && currentMonthDates.map((date, key) =>
-                        showDates(date, key, selectedDate, (date) => handleSelectedDate(date))
+                        showDates(date, key, selectedDate, (date) => selectDate(date))
                     )
                 }
 

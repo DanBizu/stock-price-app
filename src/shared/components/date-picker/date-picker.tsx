@@ -197,7 +197,7 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
             currentMonthDates,
             nextMonthDates,
             nextMonth,
-            handleSelectedDate: (date: CalendarDay) => this.changeSelectedDate(date),
+            selectDate: (date: CalendarDay) => this.changeSelectedDate(date),
             changeToPrevMonth: (prevMonth: CalendarMonth) => this.switchToPrevMonth(prevMonth),
             changeToNextMonth: (currentMonth: CalendarMonth, nextMonth: CalendarMonth) => this.switchToNextMonth(currentMonth, nextMonth)
         }
