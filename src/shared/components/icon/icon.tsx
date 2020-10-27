@@ -1,3 +1,4 @@
+import './icon.css';
 import React from 'react';
 
 interface Props {
@@ -10,7 +11,7 @@ export const Icon: React.FunctionComponent<Props> = (props: Props) => {
     const { icon, onPress } = props;
 
     return (
-        <button id="icon" onClick={onPress}>
+        <button className="icon" onClick={onPress}>
             <img src={require(`../../assets${icon}`)} alt='icon'/>
         </button>
     );

@@ -1,4 +1,5 @@
 import { MONTHS, WEEK_DAYS } from './calendar.const';
+import './calendar.css';
 import * as div from './calendar.style';
 import { CalendarDay, CalendarMonth } from '../../interfaces/calendar';
 import { Icon } from '../icon/icon';
@@ -35,35 +36,24 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
     } = props;
 
     return (
-        <div.Calendar data-cy='calendar'>
-            <div.CalendarMonthHeader>
+        <div className='calendar'>
+            <div className='header'>
+                <div className='month'>
+                    {`${Object.keys(MONTHS)[currentMonth.month]} ${currentMonth.year}`}
+                </div>
 
-                <div.CalendarMonthContent>
-                    <div.CalendarMonthText data-cy='month'>
-                        {`${Object.keys(MONTHS)[currentMonth.month]} `}
-                    </div.CalendarMonthText>
-
-                    <div.CalendarMonthText data-cy='year'>
-                        {currentMonth.year}
-                    </div.CalendarMonthText>
-
-                </div.CalendarMonthContent>
-
-                <div.CalendarHeaderIcons>
-                    <Icon
+                <div className='nav-month'>
+                    <Icon icon='/calendar/chevron_left.png'
                         onPress={() => changeToPrevMonth(prevMonth)}
-                        icon='/calendar/chevron_left.png'
                         iconHovered='/calendar/chevron_left.png' />
-                </div.CalendarHeaderIcons>
+                </div>
 
-                <div.CalendarHeaderIcons>
-                    <Icon
+                <div className='nav-month'>
+                    <Icon icon='/calendar/chevron_right.png'
                         onPress={() => changeToNextMonth(currentMonth, nextMonth)}
-                        icon='/calendar/chevron_right.png'
                         iconHovered='/calendar/chevron_right.png' />
-                </div.CalendarHeaderIcons>
-
-            </div.CalendarMonthHeader>
+                </div>
+            </div>
 
             <div.WeekdaysHeader>
                 {Object.keys(WEEK_DAYS).map((day, key) =>
@@ -122,6 +112,6 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
                     )
                 }
             </div.DatesTable>
-        </div.Calendar>
+        </div>
     );
 }

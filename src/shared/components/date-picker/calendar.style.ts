@@ -1,29 +1,29 @@
 import styled from 'styled-components';
 
-export const Calendar = styled.div`
-    width: 300px;
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-`;
+// export const Calendar = styled.div`
+//     width: 300px;
+//     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+// `;
 
-export const CalendarMonthHeader = styled.div`
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-`;
+// export const CalendarMonthHeader = styled.div`
+//     display: flex;
+//     flex-flow: row nowrap;
+//     align-items: center;
+// `;
 
-export const CalendarMonthContent = styled.div`
-    flex-direction: row;
-    flex-grow: 4;
-    justify-content: center;
-`;
+// export const CalendarMonthContent = styled.div`
+//     flex-direction: row;
+//     flex-grow: 4;
+//     justify-content: center;
+// `;
 
-export const CalendarMonthText = styled.span`
-    text-align: center;
-`;
+// export const CalendarMonthText = styled.span`
+//     text-align: center;
+// `;
 
-export const CalendarHeaderIcons = styled.div`
-    flex-grow: 1;
-`;
+// export const CalendarHeaderIcons = styled.div`
+//     flex-grow: 1;
+// `;
 
 export const WeekdaysHeader = styled.div`
     width: 100%;

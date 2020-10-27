@@ -54,8 +54,6 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
     public render() {
         const { clicked, date } = this.state;
 
-        console.log(this.state);
-
         return (
             <div.DatePicker data-cy='date-picker'>
 
@@ -111,8 +109,8 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
         }));
     }
 
-    private changeToPrevMonth(prevMonth: CalendarMonth) {
-        const currentMonth: CalendarMonth = prevMonth;
+    private switchToPrevMonth(prevMonth: CalendarMonth) {
+        const currentMonth = prevMonth;
         const currentMonthDays = getMonthDaysCount(prevMonth);
         const updatedPrevMonth = getPreviousMonth(currentMonth);
         const currentMonthFirstDay = getMonthFirstDay(currentMonth);
@@ -200,7 +198,7 @@ export class DatePicker extends React.Component<Props, DatePickerState> {
             nextMonthDates,
             nextMonth,
             handleSelectedDate: (date: CalendarDay) => this.changeSelectedDate(date),
-            changeToPrevMonth: (prevMonth: CalendarMonth) => this.changeToPrevMonth(prevMonth),
+            changeToPrevMonth: (prevMonth: CalendarMonth) => this.switchToPrevMonth(prevMonth),
             changeToNextMonth: (currentMonth: CalendarMonth, nextMonth: CalendarMonth) => this.switchToNextMonth(currentMonth, nextMonth)
         }
     }
