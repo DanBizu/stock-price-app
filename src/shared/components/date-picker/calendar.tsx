@@ -19,7 +19,7 @@ export interface CalendarProps {
 }
 
 /**
- * Calendar component to display calendar.
+ * Calendar.
  */
 export const Calendar: React.FunctionComponent<CalendarProps> = (props: CalendarProps) => {
     const {
@@ -37,6 +37,7 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
 
     return (
         <div className='calendar'>
+            {/** Header */}
             <div className='header'>
                 <div className='month'>
                     {`${Object.keys(MONTHS)[currentMonth.month]} ${currentMonth.year}`}
@@ -78,44 +79,40 @@ export const Calendar: React.FunctionComponent<CalendarProps> = (props: Calendar
                     )
                 }
 
+                {/** Current month dates */}
                 {
-                    !!currentMonthDates.length && currentMonthDates.map((date, key) => {
-                        if (date.day.valueOf() === selectedDate.day.valueOf() &&
-                            date.month.valueOf() === selectedDate.month.valueOf()) {
-                            return (
-                                <div.InactiveCell key={key}>
-                                    <div.HighlightedCell>
-                                        <div.ActiveCellContent data-cy='selected-date'>
-                                            {date.day}
-                                        </div.ActiveCellContent>
-                                    </div.HighlightedCell>
-                                </div.InactiveCell>
-
-                            );
-                        } else {
-                            return (
-                                <div.ActiveCell id='active'
-                                    key={key}
-                                    onClick={() => handleSelectedDate(date)}>
-                                    <div.ActiveCellContent>
-                                        {date.day}
-                                    </div.ActiveCellContent>
-                                </div.ActiveCell>
-                            );
-                        }
-                    })
+                    !!currentMonthDates.length && currentMonthDates.map((date, key) =>
+                        showDates(date, key, selectedDate, (date) => handleSelectedDate(date))
+                    )
                 }
 
+                {/** Fill last week with days from following month */}
                 {
                     !!nextMonthDates.length && nextMonthDates.map((date, key) =>
-                        <div.InactiveCell key={key}>
-                            <div.InactiveCellContent>
-                                {date.day}
-                            </div.InactiveCellContent>
-                        </div.InactiveCell>
+                        <div key={key} className='cell inactive'>
+                            {date.day}
+                        </div>
                     )
                 }
             </div>
         </div>
     );
+}
+
+function showDates(date: CalendarDay, key: number, selectedDate: CalendarDay, selectDate: (date: CalendarDay) => void): JSX.Element {
+    if (date.day === selectedDate.day && date.month === selectedDate.month) {
+        return (
+            <div key={key} className='cell' id='selected-cell'>
+                {date.day}
+            </div>
+        );
+    } else {
+        return (
+            <div key={key}
+                className='cell'
+                onClick={() => selectDate(date)}>
+                {date.day}
+            </div>
+        );
+    }
 }
