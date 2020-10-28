@@ -69,11 +69,7 @@ export function fillLastWeekCount(daysFromPrevMonth: number, currentMonthDays: n
 
 export function initState(): DatePickerState {
     const now = new Date();
-    const date = {
-        day: padWithZero(now.getDate()),
-        month: padWithZero(now.getMonth()),
-        year: now.getFullYear(),
-    };
+
     const currentMonth: CalendarMonth = {
         month: now.getMonth(),
         year: now.getFullYear(),
@@ -103,7 +99,6 @@ export function initState(): DatePickerState {
     return {
         clicked: false,
         hasDateChanged: false,
-        date,
         currentMonth,
         currentMonthDays,
         currentMonthFirstDay,

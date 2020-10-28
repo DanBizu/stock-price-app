@@ -8,9 +8,11 @@ import {
     WeeklyStock
     } from './interfaces/homepage';
 import * as services from './services/homepage.services';
+import { apiCall } from './services/homepage.webapi';
 import { Graph } from '../graph/graph';
 import { DatePicker } from '../shared/components/date-picker/date-picker';
 import { Select } from '../shared/components/select/select';
+import { CalendarDay } from '../shared/interfaces/calendar';
 import React from 'react';
 
 interface Props { }
@@ -26,6 +28,8 @@ interface State {
      * so that the other functions don't break when the time series changes.
      */
     receivedTimeSeries: TIME_SERIES;
+    startDate: CalendarDay;
+    endDate: CalendarDay;
     error: string;
 }
 
@@ -41,12 +45,16 @@ export class Homepage extends React.Component<Props, State> {
             symbol: '',
             timeSeries: TIME_SERIES.DAILY,
             receivedTimeSeries: TIME_SERIES.DAILY,
+            startDate: services.initDate(),
+            endDate: services.initDate(),
             error: '',
         }
     }
 
     public render() {
-        const { receivedData, symbol } = this.state;
+        const { receivedData, symbol, startDate, endDate } = this.state;
+        // console.log('+++ startDate', startDate);
+        // console.log('+++ endDate', endDate);
 
         return (
             <div id="homepage">
@@ -79,14 +87,18 @@ export class Homepage extends React.Component<Props, State> {
 
                 {/** Select time range */}
                 <div id='time-range'>
+                    {/** Start date */}
                     <div>
                         <label>Start date</label>
-                        <DatePicker />
+                        <DatePicker date={startDate}
+                            selectDate={(date) => this.selectStartDate(date)} />
                     </div>
 
+                    {/** End date */}
                     <div>
                         <label>End date</label>
-                        <DatePicker />
+                        <DatePicker date={endDate}
+                            selectDate={(date) => this.selectEndDate(date)} />
                     </div>
                 </div>
 
@@ -114,7 +126,23 @@ export class Homepage extends React.Component<Props, State> {
     private getStockPrices() {
         const { symbol, timeSeries } = this.state;
 
-        services.apiCall(symbol, timeSeries).then(data => this.assignByTimeSeries(data));
+        apiCall(symbol, timeSeries).then(data => this.assignByTimeSeries(data));
+    }
+
+    /** Change start date */
+    private selectStartDate(date: CalendarDay) {
+        this.setState({
+            ...this.state,
+            startDate: date,
+        });
+    }
+
+    /** Change end date */
+    private selectEndDate(date: CalendarDay) {
+        this.setState({
+            ...this.state,
+            endDate: date,
+        });
     }
 
     /** Assign data to the correct state property based on timeSeries */
@@ -152,6 +180,8 @@ export class Homepage extends React.Component<Props, State> {
                 });
                 break;
             }
+
+            // <<!>> ERROR HANDLING MUST BE DONE IN THE REJECT FUNCTION OF THE PROMISE (where apiCall is called)
             default: this.setState({
                 ...this.state,
                 error: 'We were unable to fetch data.',

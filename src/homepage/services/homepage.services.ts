@@ -1,23 +1,17 @@
-import { SERVER_URL } from '../../shared/server-cfg';
+import { padWithZero } from '../../shared/components/date-picker/date-picker.utils';
+import { CalendarDay } from '../../shared/interfaces/calendar';
 import {
     DailyStock,
     GraphStockValues,
     Limits,
     MonthlyStock,
-    Stock,
     TIME_SERIES,
     WeeklyStock
     } from '../interfaces/homepage';
 
-// ====== API ======
+// ====== CONST ======
 
-export async function apiCall(symbol: string, timeSeries: TIME_SERIES): Promise<Stock> {
-    let response = await fetch(`${SERVER_URL}/stock-prices?symbol=${symbol}&timeSeries=${timeSeries}`)
-        .then(response => response.json())
-        .then(data => data)
-        .catch(err => err);
-    return response;
-}
+export const TIME_SERIES_OPTIONS = [TIME_SERIES.DAILY, TIME_SERIES.WEEKLY, TIME_SERIES.MONTHLY];
 
 // ====== UTILS ======
 
@@ -167,4 +161,14 @@ export function getDisabledStatus(symbol: string): boolean {
     return symbol.length === 0 ? true : false;
 }
 
-export const TIME_SERIES_OPTIONS = [TIME_SERIES.DAILY, TIME_SERIES.WEEKLY, TIME_SERIES.MONTHLY];
+export function initDate(): CalendarDay {
+    const now = new Date();
+    const date = {
+        day: padWithZero(now.getDate()),
+        month: padWithZero(now.getMonth()),
+        year: now.getFullYear(),
+    };
+
+    return date;
+}
+
