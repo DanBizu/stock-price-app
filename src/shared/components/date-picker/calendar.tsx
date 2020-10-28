@@ -108,7 +108,7 @@ function showDates(date: CalendarDay, key: number, selectedDate: CalendarDay, se
     } else {
         return (
             <div key={key}
-                className='cell'
+                className='cell selectable'
                 onClick={() => selectDate(date)}>
                 {date.day}
             </div>
