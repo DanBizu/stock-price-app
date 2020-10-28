@@ -1,0 +1,13 @@
+#time-range {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#time-range>div {
+    margin: 30px;
+}
+
+#time-range label {
+    font-weight: 600;
+}

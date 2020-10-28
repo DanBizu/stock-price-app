@@ -1,3 +1,4 @@
+import './homepage.css';
 import {
     DailyStock,
     GraphStockValues,
@@ -77,7 +78,18 @@ export class Homepage extends React.Component<Props, State> {
                 }
 
                 {/** Select time range */}
-                <DatePicker />
+                <div id='time-range'>
+                    <div>
+                        <label>Start date</label>
+                        <DatePicker />
+                    </div>
+
+                    <div>
+                        <label>End date</label>
+                        <DatePicker />
+                    </div>
+                </div>
+
             </div>
         );
     }
